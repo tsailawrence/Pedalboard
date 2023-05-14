@@ -1,0 +1,12 @@
+[
+  {
+    "effect": "Reverb",
+    "arg": {
+      "room_size": 20
+    }
+  },
+  {
+    "effect": "Chorus",
+    "arg": {}
+  }
+]
