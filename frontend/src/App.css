@@ -1,0 +1,64 @@
+.App {
+	text-align: center;
+	display: flex;
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	max-width: 100%;
+	max-height: 100%;
+	align-items: center;
+	justify-content: center;
+}
+.webname {
+	position: absolute;
+	top: 4rem;
+	left: 4rem;
+}
+.MuiDropzoneArea-root {
+	background: linear-gradient(
+		135deg,
+		rgba(132, 4, 217, 0.25) 0%,
+		rgba(12, 12, 12, 0.7) 25%,
+		rgba(132, 4, 217, 0.25) 100%
+	) !important;
+	border: var(--secondarycolor) 0.1rem solid !important;
+	padding: 1rem;
+	width: 50vw !important;
+	height: 60vh;
+}
+.Edit {
+	width: 25rem;
+	height: 60vh;
+	border: var(--secondarycolor) 0.1rem solid;
+	margin-left: 2rem;
+	border-radius: 0.5rem;
+	position: relative;
+}
+.row {
+	display: flex;
+	padding-top: 2rem;
+	padding-left: 2rem;
+	width: 100%;
+}
+label {
+	padding-left: 1rem;
+}
+.submit {
+	background-color: var(--backgroundcolor);
+	font-size: 1rem;
+	padding: 0.25rem;
+	text-align: center;
+	border: 0.1rem solid var(--secondarycolor);
+	border-radius: 0.1rem;
+	width: 5rem;
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+}
+.submit:hover {
+	cursor: pointer;
+	background-color: var(--secondarycolor);
+}
+.submit:active {
+	background-color: var(--secondarycolor);
+}
