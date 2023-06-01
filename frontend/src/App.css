@@ -8,6 +8,11 @@
 	max-height: 100%;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
+	padding-top: 8rem;
+	gap: 2rem;
+	overflow-y: scroll;
+	padding-bottom: 10rem;
 }
 .webname {
 	position: absolute;
@@ -24,13 +29,18 @@
 	border: var(--secondarycolor) 0.1rem solid !important;
 	padding: 1rem;
 	width: 50vw !important;
-	height: 60vh;
+	height: 30rem;
+}
+@media screen and (max-width: 1100px) {
+	.MuiDropzoneArea-root {
+		width: 25rem !important;
+		height: 40vw;
+	}
 }
 .Edit {
 	width: 25rem;
-	height: 60vh;
+	height: 30rem;
 	border: var(--secondarycolor) 0.1rem solid;
-	margin-left: 2rem;
 	border-radius: 0.5rem;
 	position: relative;
 }
@@ -54,10 +64,12 @@ label {
 	position: absolute;
 	bottom: 1rem;
 	right: 1rem;
+	transition: all 1s ease;
 }
 .submit:hover {
 	cursor: pointer;
 	background-color: var(--secondarycolor);
+	transform: scale(1.25);
 }
 .submit:active {
 	background-color: var(--secondarycolor);
