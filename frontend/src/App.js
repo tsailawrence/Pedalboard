@@ -21,17 +21,17 @@ function App() {
 			return;
 		}
 
-		const data = new FormData();
 		files.forEach((file) => {
+			const data = new FormData();
 			data.append(`file`, file, file.name);
 			data.append(`controls`, {
-				Volume: volume,
-				Reverb: Reverb,
-				PitchShift: PitchShift,
-				LadderFilter: LadderFilter,
-				Distortion: Distortion,
-				Phaser: Phaser,
-				Chorus: Chorus,
+				Volume: volume, //0-200
+				Reverb: Reverb, //0-100
+				PitchShift: PitchShift, //-15-15
+				LadderFilter: LadderFilter, //0-1600
+				Distortion: Distortion, //boolean
+				Phaser: Phaser, //boolean
+				Chorus: Chorus, //boolean
 			});
 
 			fetch("/api/", {
