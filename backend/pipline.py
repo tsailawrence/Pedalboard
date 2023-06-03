@@ -34,5 +34,6 @@ def effect_List_handler(request_json):
     return effect_params
 
 
-request_json = {}
-board = Pedalboard(effect_List_handler(request_json))
+def pedalboard_handler(request_json):
+    board = Pedalboard(effect_List_handler(request_json))
+    return board
