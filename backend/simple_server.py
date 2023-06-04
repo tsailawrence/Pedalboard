@@ -9,6 +9,8 @@ from pipline import effect_pipline
 from requests_toolbelt.multipart import decoder
 import cgi
 import json
+
+
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # first we need to parse it
@@ -20,7 +22,7 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         # send response headers
         self.send_header('Content-Type', 'application/json')
-        
+
         self.end_headers()
         json_str = 'Please use post'
         self.wfile.write(json_str.encode(encoding='utf_8'))
@@ -39,15 +41,16 @@ class MyHandler(BaseHTTPRequestHandler):
             fp=self.rfile,
             headers=self.headers,
             environ={'REQUEST_METHOD': 'POST'})
-             
+
         # Body processing
         data_directory = IO_audio_read(form["file"])
         effect_string = json.loads(form["controls"].file.read())
-        output_directory = effect_pipline(effect_string,data_directory)
+        output_directory = effect_pipline(effect_string, data_directory)
 
         # Write the response content
         with open(output_directory, 'rb') as file:
-            self.wfile.write(file.read()) 
+            self.wfile.write(file.read())
+
 
 def hash(str):
     return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
@@ -59,14 +62,15 @@ def parse_args():
     parser.add_argument('port', type=int)
     return parser.parse_args()
 
+
 def IO_audio_read(IO_audio):
-    data_directory  = "backend/data/" + IO_audio.filename
+    # data_directory = "backend/data/" + IO_audio.filename
+    data_directory = "data/" + IO_audio.filename
     IO_audio_file = IO_audio.file.read()
     f = open(data_directory, "wb")
     f.write(IO_audio_file)
     f.close()
     return data_directory
-
 
 
 def main():
