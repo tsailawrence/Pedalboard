@@ -1,5 +1,5 @@
 
-from pedalboard import Pedalboard, Chorus, Reverb
+from pedalboard import Pedalboard, Chorus, Reverb, Delay, Distortion, Gain
 from pedalboard.io import AudioFile
 
 # Make a Pedalboard object, containing multiple audio plugins:
@@ -9,7 +9,6 @@ def choose_function(func_dict):
     def decorator_func(func):
         def wrapper(*args, **kwargs):
             key = args[0]  # 假設第一個參數為選擇鍵
-            #{'Reverb': {'room_size': 0.25}}
             if key in func_dict:
                 chosen_func = func_dict[key]
                 return chosen_func(*args[1:], **kwargs)
@@ -21,7 +20,10 @@ def choose_function(func_dict):
 
 @choose_function({
     "Chorus": Chorus,
-    "Reverb": Reverb
+    "Reverb": Reverb,
+    "Delay" : Delay,
+    "Distortion": Distortion,
+    "Gain": Gain
     # 之後有新功能可以再加
 })
 def effect_handler(effect, **kwargs):
@@ -32,8 +34,15 @@ def effect_List_handler(request_json):
     effect_params = []
     for effect_setting in request_json:
         (key, value), = effect_setting.items()
+        value = value_processer(value)
         effect_params.append(effect_handler(key,**value))
     return effect_params
+
+def value_processer(value):
+    return_value ={}
+    for key  in value.keys():
+        return_value.update({key: float(value[key])})
+    return return_value
 
 
 def pedalboard_handler(request_json):

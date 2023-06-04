@@ -20,6 +20,7 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         # send response headers
         self.send_header('Content-Type', 'application/json')
+        
         self.end_headers()
         json_str = 'Please use post'
         self.wfile.write(json_str.encode(encoding='utf_8'))
@@ -29,7 +30,8 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_response(200)
 
         # Set the Content-type header
-        self.send_header('Content-type', 'text/html')
+        self.send_header('Content-type', 'audio/mp3')
+        #self.send_header('attachment; filename="my_filename.mp3"')
         self.end_headers()
 
         # Get the request body
@@ -40,14 +42,12 @@ class MyHandler(BaseHTTPRequestHandler):
              
         # Body processing
         data_directory = IO_audio_read(form["file"])
-        effect_string = json.loads(form["effect"].file.read())
-
+        effect_string = json.loads(form["controls"].file.read())
         output_directory = effect_pipline(effect_string,data_directory)
 
         # Write the response content
-        self.wfile.write(
-            f'<html><body><h1>Received POST data: {form}</h1></body></html>'.encode('utf-8'))
-
+        with open(output_directory, 'rb') as file:
+            self.wfile.write(file.read()) 
 
 def hash(str):
     return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
@@ -71,7 +71,7 @@ def IO_audio_read(IO_audio):
 
 def main():
     # args = parse_args()
-    httpd = HTTPServer(('0.0.0.0', 3000), MyHandler)
+    httpd = HTTPServer(('0.0.0.0', 4000), MyHandler)
     httpd.serve_forever()
 
 
