@@ -23,18 +23,20 @@ function App() {
 
 		files.forEach((file) => {
 			const data = new FormData();
-			data.append(`file`, file, file.name);
-			data.append(`controls`, {
-				Volume: volume, //0-200
-				Reverb: Reverb, //0-100
-				PitchShift: PitchShift, //-15-15
-				LadderFilter: LadderFilter, //0-1600
-				Distortion: Distortion, //boolean
-				Phaser: Phaser, //boolean
-				Chorus: Chorus, //boolean
-			});
+			const controls = [{
+				// Volume: volume, //0-200
+				Reverb: {room_size : Reverb}, //0-100
+				// PitchShift: PitchShift, //-15-15
+				// LadderFilter: LadderFilter, //0-1600
+				// Distortion: Distortion, //boolean
+				// Phaser: Phaser, //boolean
+				// Chorus: Chorus, //boolean
+			}]
 
-			fetch("/api/", {
+			data.append(`file`, file, file.name);
+			data.append(`controls`,JSON.stringify(controls) );
+
+			fetch("http://localhost:4000", {
 				method: "POST",
 				body: data,
 			})
@@ -68,9 +70,9 @@ function App() {
 						name="volume"
 						onChange={(e) => setvolume(e.target.value)}
 						value={volume}
-						step={1}
+						step={0.1}
 						min={0}
-						max={200}
+						max={1}
 					/>
 					<label htmlFor="volume">Volume {volume}%</label>
 				</div>
@@ -79,11 +81,11 @@ function App() {
 						type="range"
 						id="Reverb"
 						name="Reverb"
-						step={1}
+						step={0.05}
 						value={Reverb}
 						onChange={(e) => setReverb(e.target.value)}
 						min={0}
-						max={100}
+						max={1}
 					/>
 					<label htmlFor="volume">Reverb {Reverb}%</label>
 				</div>
