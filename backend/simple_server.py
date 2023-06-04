@@ -5,9 +5,10 @@ import os
 from os import listdir
 from os.path import isfile, join
 import hashlib
-from pipline import pedalboard_handler
+from pipline import effect_pipline
 from requests_toolbelt.multipart import decoder
 import cgi
+import json
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # first we need to parse it
@@ -36,6 +37,12 @@ class MyHandler(BaseHTTPRequestHandler):
             fp=self.rfile,
             headers=self.headers,
             environ={'REQUEST_METHOD': 'POST'})
+             
+        # Body processing
+        data_directory = IO_audio_read(form["file"])
+        effect_string = json.loads(form["effect"].file.read())
+
+        output_directory = effect_pipline(effect_string,data_directory)
 
         # Write the response content
         self.wfile.write(
@@ -51,6 +58,15 @@ def parse_args():
     parser.add_argument('ip', type=str)
     parser.add_argument('port', type=int)
     return parser.parse_args()
+
+def IO_audio_read(IO_audio):
+    data_directory  = "backend/data/" + IO_audio.filename
+    IO_audio_file = IO_audio.file.read()
+    f = open(data_directory, "wb")
+    f.write(IO_audio_file)
+    f.close()
+    return data_directory
+
 
 
 def main():
