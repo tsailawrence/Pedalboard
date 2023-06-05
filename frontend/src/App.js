@@ -39,6 +39,10 @@ function App() {
 			fetch("http://localhost:4000", {
 				method: "POST",
 				body: data,
+				mode: 'cors',
+				headers: {
+				  'Access-Control-Allow-Origin':'*'
+				}
 			})
 				.then((res) => {
 					if (res.status === 404) return;
