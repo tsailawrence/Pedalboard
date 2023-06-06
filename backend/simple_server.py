@@ -12,6 +12,13 @@ import json
 
 
 class MyHandler(BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200, "ok")
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
     def do_GET(self):
         # first we need to parse it
         parsed = urlparse(self.path)
@@ -64,7 +71,7 @@ def parse_args():
 
 
 def IO_audio_read(IO_audio):
-    # data_directory = "backend/data/" + IO_audio.filename
+    #data_directory = "backend/data/" + IO_audio.filename
     data_directory = "data/" + IO_audio.filename
     IO_audio_file = IO_audio.file.read()
     f = open(data_directory, "wb")

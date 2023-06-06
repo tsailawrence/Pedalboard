@@ -4,13 +4,11 @@ import { useState, React } from "react";
 
 function App() {
 	const [fileList, setFileList] = useState([]);
-	const [volume, setvolume] = useState(100);
-	const [Phaser, setPhaser] = useState(false);
-	const [Chorus, setChorus] = useState(false);
+	const [Volume, setvolume] = useState(100);
 	const [Reverb, setReverb] = useState(0);
-	const [PitchShift, setPitchShift] = useState(0);
-	const [LadderFilter, setLadderFilter] = useState(0);
-	const [Distortion, setDistortion] = useState(false);
+	const [Delay, setDelay] = useState(0);
+	const [Chorus, setChorus] = useState(false);
+	const [Distortion, setDistortion] = useState(0);
 
 	const handleFileChange = (files) => {
 		setFileList(files);
@@ -24,25 +22,23 @@ function App() {
 		files.forEach((file) => {
 			const data = new FormData();
 			const controls = [{
-				// Volume: volume, //0-200
-				Reverb: {room_size : Reverb}, //0-100
-				// PitchShift: PitchShift, //-15-15
-				// LadderFilter: LadderFilter, //0-1600
-				// Distortion: Distortion, //boolean
-				// Phaser: Phaser, //boolean
-				// Chorus: Chorus, //boolean
-			}]
-
+				Gain: [{isOn: true},{gain_db:Volume*0.01}]}, //0-200
+				{ Reverb: [{isOn: true},{room_size : Reverb*0.01}]}, //0-100
+				{ Delay:[{isOn: true}, {mix : Delay}]}, //0-100
+				{ Chorus:[{isOn:Chorus}, {}  ]}, //boolean
+				{ Distortion:[{isOn: true}, {drive_db : Distortion}]}, //0-100
+			]
+			console.log(JSON.stringify(controls))
 			data.append(`file`, file, file.name);
 			data.append(`controls`,JSON.stringify(controls) );
 
 			fetch("http://localhost:4000", {
 				method: "POST",
 				body: data,
-				mode: 'cors',
-				headers: {
-				  'Access-Control-Allow-Origin':'*'
-				}
+				// mode: 'cors',
+				// headers: {
+				//   'Access-Control-Allow-Origin':'*'
+				// }
 			})
 				.then((res) => {
 					if (res.status === 404) return;
@@ -73,55 +69,51 @@ function App() {
 						id="volume"
 						name="volume"
 						onChange={(e) => setvolume(e.target.value)}
-						value={volume}
-						step={0.1}
+						value={Volume}
+						step={5}
 						min={0}
-						max={1}
+						max={100}
 					/>
-					<label htmlFor="volume">Volume {volume}%</label>
+					<label htmlFor="volume">Volume {Volume}%</label>
 				</div>
 				<div className="row">
 					<input
 						type="range"
 						id="Reverb"
 						name="Reverb"
-						step={0.05}
+						step={5}
 						value={Reverb}
 						onChange={(e) => setReverb(e.target.value)}
 						min={0}
-						max={1}
+						max={100}
 					/>
-					<label htmlFor="volume">Reverb {Reverb}%</label>
+					<label htmlFor="Reverb">Reverb {Reverb}%</label>
 				</div>
 				<div className="row">
 					<input
 						type="range"
-						id="PitchShift"
-						name="PitchShift"
-						step={1}
-						value={PitchShift}
-						onChange={(e) => setPitchShift(e.target.value)}
-						min={-15}
-						max={15}
-					/>
-					<label htmlFor="PitchShift">
-						PitchShift {PitchShift} semitones
-					</label>
-				</div>
-				<div className="row">
-					<input
-						type="range"
-						id="LadderFilter"
-						name="LadderFilter"
-						step={1}
-						value={LadderFilter}
-						onChange={(e) => setLadderFilter(e.target.value)}
+						id="Delay"
+						name="Delay"
+						onChange={(e) => setDelay(e.target.value)}
+						value={Delay}
+						step={5}
 						min={0}
-						max={1600}
+						max={100}
 					/>
-					<label htmlFor="LadderFilter">
-						LadderFilter cutoff {LadderFilter}hz
-					</label>
+					<label htmlFor="Delay">Delay {Delay}%</label>
+				</div>
+				<div className="row">
+					<input
+						type="range"
+						id="Distortion"
+						name="Distortion"
+						onChange={(e) => setDistortion(e.target.value)}
+						value={Distortion}
+						step={5}
+						min={0}
+						max={100}
+					/>
+					<label htmlFor="Distortion">Distortion {Distortion}%</label>
 				</div>
 				<div className="row">
 					<input
@@ -132,26 +124,6 @@ function App() {
 						checked={Chorus}
 					/>
 					<label htmlFor="Chorus">Chorus</label>
-				</div>
-				<div className="row">
-					<input
-						type="checkbox"
-						id="Phaser"
-						name="Phaser"
-						onChange={(e) => setPhaser(e.target.checked)}
-						checked={Phaser}
-					/>
-					<label htmlFor="Phaser">Phaser</label>
-				</div>
-				<div className="row">
-					<input
-						type="checkbox"
-						id="Distortion"
-						name="Distortion"
-						onChange={(e) => setDistortion(e.target.checked)}
-						checked={Distortion}
-					/>
-					<label htmlFor="Distortion">Distortion</label>
 				</div>
 				<input
 					className="submit"
