@@ -33,11 +33,12 @@ def upload2ipfs(file_dir, file_name):
 
 def request_file(save_dir, cid):
     # Access Token
-    Access_Token = 'IJVds5JJqLOJZZsgWO68uYFzR0NNaq6-8Yzb4ApNfyKIlPw8G23q17Z5fEcHp58b'
+    # Access_Token = 'IJVds5JJqLOJZZsgWO68uYFzR0NNaq6-8Yzb4ApNfyKIlPw8G23q17Z5fEcHp58b'
     # GateWay
     Gateways_domain = 'purple-supreme-frog-923.mypinata.cloud'
 
-    ipfs_url = 'https://' + Gateways_domain + '/ipfs/' + cid + '?pinataGatewayToken=' + Access_Token
+    # ipfs_url = 'https://' + Gateways_domain + '/ipfs/' + cid + '?pinataGatewayToken=' + Access_Token
+    ipfs_url = 'https://' + Gateways_domain + '/ipfs/' + cid
 
     # print(ipfs_url)
 
