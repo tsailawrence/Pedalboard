@@ -11,7 +11,8 @@ def choose_function(func_dict):
             key = args[0]  # 假設第一個參數為選擇鍵
             if key in func_dict:
                 chosen_func = func_dict[key]
-                return chosen_func(*args[1:], **kwargs)
+                if(args[1]['isOn'] == True):
+                    return chosen_func(**kwargs)
             else:
                 raise ValueError("Invalid input.")
         return wrapper
@@ -26,7 +27,7 @@ def choose_function(func_dict):
     "Gain": Gain
     # 之後有新功能可以再加
 })
-def effect_handler(effect, **kwargs):
+def effect_handler(effect, isON, **kwargs):
     return True
 
 
@@ -34,8 +35,8 @@ def effect_List_handler(request_json):
     effect_params = []
     for effect_setting in request_json:
         (key, value), = effect_setting.items()
-        value = value_processer(value)
-        effect_params.append(effect_handler(key, **value))
+        value_effect = value_processer(value[1])
+        effect_params.append(effect_handler(key, value[0], **value_effect))
     return effect_params
 
 

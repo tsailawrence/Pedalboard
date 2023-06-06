@@ -1,5 +1,5 @@
 # 使用 Python 的官方映像檔作為基礎
-FROM python:3.9
+FROM  amd64/python:3.9-buster
 
 # 設定工作目錄
 WORKDIR /backend
