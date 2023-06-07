@@ -9,6 +9,7 @@ function App() {
 	const [Delay, setDelay] = useState(0);
 	const [Chorus, setChorus] = useState(false);
 	const [Distortion, setDistortion] = useState(0);
+	const [IPFS, setIPFS] = useState(0);
 
 	const handleFileChange = (files) => {
 		setFileList(files);
@@ -124,6 +125,16 @@ function App() {
 						checked={Chorus}
 					/>
 					<label htmlFor="Chorus">Chorus</label>
+				</div>
+				<div className="row">
+					<input
+						type="checkbox"
+						id="IPFS"
+						name="IPFS"
+						onChange={(e) => setIPFS(e.target.checked)}
+						checked={IPFS}
+					/>
+					<label htmlFor="IPFS">Upload to IPFS</label>
 				</div>
 				<input
 					className="submit"
