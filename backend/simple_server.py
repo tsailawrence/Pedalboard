@@ -61,9 +61,12 @@ class MyHandler(BaseHTTPRequestHandler):
         (_, ipfs_is_true), = ipfs_string.items()
         if ipfs_is_true:
             file_name = output_directory.split('/')[-1]
-            cid = upload2ipfs(output_directory, file_name)
-            # print('file: {}   cid: {}'.format(output_directory, cid))
-            print('https link: {}'.format('https://gateway.pinata.cloud/ipfs/' + cid))
+            try:
+                cid = upload2ipfs(output_directory, file_name)
+                # print('file: {}   cid: {}'.format(output_directory, cid))
+                print('https link: {}'.format('https://gateway.pinata.cloud/ipfs/' + cid))
+            except:
+                print('ipfs upload fialed')
 
         # Write the response content
         try:
