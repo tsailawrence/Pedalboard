@@ -58,6 +58,9 @@ class MyHandler(BaseHTTPRequestHandler):
         effect_string = json.loads(form["controls"].file.read())
         output_directory = effect_pipline(effect_string, data_directory)
 
+        while not  os.path.isfile(output_directory):
+            continue
+        
         # Post to IPFS using pinata
         ipfs_string = json.loads(form["ipfs"].file.read())
         (_, ipfs_is_true), = ipfs_string.items()
