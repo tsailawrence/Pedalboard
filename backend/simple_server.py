@@ -89,7 +89,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
 
 def hash(str):
-    return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
+    return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1) + randint(0,1000)
 
 
 def parse_args():
