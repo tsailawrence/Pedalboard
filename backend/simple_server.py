@@ -11,6 +11,8 @@ import cgi
 import json
 from socketserver import ThreadingMixIn
 import threading
+from random import randint
+from time import sleep
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -57,10 +59,13 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Write the response content
         try:
+            print("file has been processed successfully")
+            sleep(randint(0,5))
             with open(output_directory, 'rb') as file:
                 self.wfile.write(file.read())
         except:
-            self.wfile.write('return failed')
+            
+            self.wfile.write(b'return failed')
 
 
 def hash(str):
