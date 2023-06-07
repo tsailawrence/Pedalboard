@@ -9,7 +9,8 @@ from pipline import effect_pipline
 from requests_toolbelt.multipart import decoder
 import cgi
 import json
-
+from socketserver import ThreadingMixIn
+import threading
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -80,11 +81,19 @@ def IO_audio_read(IO_audio):
     return data_directory
 
 
-def main():
-    # args = parse_args()
-    httpd = HTTPServer(('0.0.0.0', 4000), MyHandler)
-    httpd.serve_forever()
+# def main():
+#     # args = parse_args()
+#     httpd = HTTPServer(('0.0.0.0', 4000), MyHandler)
+#     httpd.serve_forever()
 
+
+# if __name__ == '__main__':
+#     main()
+
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""
 
 if __name__ == '__main__':
-    main()
+    server = ThreadedHTTPServer(('0.0.0.0', 4000), MyHandler)
+    print('Starting server, use <Ctrl-C> to stop')
+    server.serve_forever()
