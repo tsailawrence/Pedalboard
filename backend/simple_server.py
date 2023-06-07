@@ -56,8 +56,11 @@ class MyHandler(BaseHTTPRequestHandler):
         output_directory = effect_pipline(effect_string, data_directory)
 
         # Write the response content
-        with open(output_directory, 'rb') as file:
-            self.wfile.write(file.read())
+        try:
+            with open(output_directory, 'rb') as file:
+                self.wfile.write(file.read())
+        except:
+            self.wfile.write('return failed')
 
 
 def hash(str):
