@@ -55,6 +55,7 @@ class MyHandler(BaseHTTPRequestHandler):
             headers=self.headers,
             environ={'REQUEST_METHOD': 'POST'})
 
+        tt = form["file"]
         # Body processing
         data_directory = IO_audio_read(form["file"])
         effect_string = json.loads(form["controls"].file.read())
@@ -103,9 +104,9 @@ def parse_args():
 
 def IO_audio_read(IO_audio):
     filename = IO_audio.filename.split('.')
-    #data_directory = "backend/data/" + str(hash(filename[0]))  +"."+  filename[1]
+    data_directory = "backend/data/" + str(randint(0, 100000)) + "." + filename[1]
     # print(data_directory)
-    data_directory = "data/" + str(randint(0, 100000)) + "." + filename[1]
+    #data_directory = "data/" + str(randint(0, 100000)) + "." + filename[1]
     IO_audio_file = IO_audio.file.read()
     f = open(data_directory, "wb")
     f.write(IO_audio_file)
