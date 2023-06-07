@@ -15,6 +15,7 @@ from random import randint
 from time import sleep
 from API.ipfs import upload2ipfs
 
+
 class MyHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(200, "ok")
@@ -23,6 +24,7 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+
     def do_GET(self):
         # first we need to parse it
         parsed = urlparse(self.path)
@@ -58,9 +60,9 @@ class MyHandler(BaseHTTPRequestHandler):
         effect_string = json.loads(form["controls"].file.read())
         output_directory = effect_pipline(effect_string, data_directory)
 
-        while not  os.path.isfile(output_directory):
+        while not os.path.isfile(output_directory):
             continue
-        
+
         # Post to IPFS using pinata
         ipfs_string = json.loads(form["ipfs"].file.read())
         (_, ipfs_is_true), = ipfs_string.items()
@@ -69,14 +71,15 @@ class MyHandler(BaseHTTPRequestHandler):
             try:
                 cid = upload2ipfs(output_directory, file_name)
                 # print('file: {}   cid: {}'.format(output_directory, cid))
-                print('https link: {}'.format('https://gateway.pinata.cloud/ipfs/' + cid))
+                print('https link: {}'.format(
+                    'https://gateway.pinata.cloud/ipfs/' + cid))
             except:
                 print('ipfs upload fialed')
 
         # Write the response content
         # try:
         print("file has been processed successfully")
-        sleep(randint(0,5))
+        sleep(randint(0, 5))
         with open(output_directory, 'rb') as file:
             for file_chunk in read_in_chunks(file):
                 self.wfile.write(file_chunk)
@@ -87,9 +90,8 @@ class MyHandler(BaseHTTPRequestHandler):
         #     self.wfile.write(b'return failed')
 
 
-
 def hash(str):
-    return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1) + randint(0,1000)
+    return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
 
 
 def parse_args():
@@ -102,13 +104,14 @@ def parse_args():
 def IO_audio_read(IO_audio):
     filename = IO_audio.filename.split('.')
     #data_directory = "backend/data/" + str(hash(filename[0]))  +"."+  filename[1]
-    print(data_directory)
-    data_directory = "data/" + str(hash(filename[0]))  +"."+  filename[1]
+    # print(data_directory)
+    data_directory = "data/" + str(randint(0, 100000)) + "." + filename[1]
     IO_audio_file = IO_audio.file.read()
     f = open(data_directory, "wb")
     f.write(IO_audio_file)
     f.close()
     return data_directory
+
 
 def read_in_chunks(file_object, chunk_size=102400):
     """Generator to read a file piece by piece. Default chunk size: 1k."""
@@ -117,7 +120,8 @@ def read_in_chunks(file_object, chunk_size=102400):
         if not data:
             break
         yield data
-        
+
+
 def hash(str):
     return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
 
@@ -132,6 +136,7 @@ def hash(str):
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
+
 
 if __name__ == '__main__':
     server = ThreadedHTTPServer(('0.0.0.0', 4000), MyHandler)
