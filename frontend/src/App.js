@@ -32,7 +32,7 @@ function App() {
 			data.append(`file`, file, file.name);
 			data.append(`controls`,JSON.stringify(controls) );
 
-			fetch("http://localhost:4000", {
+			fetch("/app1/", {
 				method: "POST",
 				body: data,
 				// mode: 'cors',
