@@ -11,6 +11,7 @@ import cgi
 import json
 from socketserver import ThreadingMixIn
 import threading
+from API.ipfs import upload2ipfs
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -55,9 +56,19 @@ class MyHandler(BaseHTTPRequestHandler):
         effect_string = json.loads(form["controls"].file.read())
         output_directory = effect_pipline(effect_string, data_directory)
 
+        # Post to IPFS using pinata
+        ipfs_string = json.loads(form["ipfs"].file.read())
+        (_, ipfs_is_true), = ipfs_string.items()
+        if ipfs_is_true:
+            file_name = output_directory.split('/')[-1]
+            cid = upload2ipfs(output_directory, file_name)
+            # print('file: {}   cid: {}'.format(output_directory, cid))
+            print('https link: {}'.format('https://gateway.pinata.cloud/ipfs/' + cid))
+
         # Write the response content
         with open(output_directory, 'rb') as file:
             self.wfile.write(file.read())
+
 
 
 def hash(str):

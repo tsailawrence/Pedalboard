@@ -47,9 +47,9 @@ def request_file(save_dir, cid):
     with open(save_dir, 'wb') as f:
         f.write(r.content)
 
-file_dir = "../data/demo.mp3"
-file_name = file_dir.split('/')[-1]
-save_dir = "../data/test.mp3"
+# file_dir = "../data/demo.mp3"
+# file_name = file_dir.split('/')[-1]
+# save_dir = "../data/test.mp3"
 
-cid = upload2ipfs(file_dir, file_name)
-request_file(save_dir, cid)
+# cid = upload2ipfs(file_dir, file_name)
+# request_file(save_dir, cid)
