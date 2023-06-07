@@ -31,9 +31,10 @@ function App() {
 			]
 			console.log(JSON.stringify(controls))
 			data.append(`file`, file, file.name);
-			data.append(`controls`,JSON.stringify(controls) );
+			data.append(`controls`, JSON.stringify(controls) );
+			data.append(`ipfs`, JSON.stringify({'ipfs': IPFS}));
 
-			fetch("/app1/", {
+			fetch("http://localhost:4000", {
 				method: "POST",
 				body: data,
 				// mode: 'cors',
