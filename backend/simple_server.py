@@ -71,14 +71,17 @@ class MyHandler(BaseHTTPRequestHandler):
                 print('ipfs upload fialed')
 
         # Write the response content
-        try:
-            print("file has been processed successfully")
-            sleep(randint(0,5))
-            with open(output_directory, 'rb') as file:
-                self.wfile.write(file.read())
-        except:
-            
-            self.wfile.write(b'return failed')
+        # try:
+        print("file has been processed successfully")
+        sleep(randint(0,5))
+        with open(output_directory, 'rb') as file:
+            for file_chunk in read_in_chunks(file):
+                self.wfile.write(file_chunk)
+
+        os.remove(data_directory)
+        os.remove(output_directory)
+        # except:
+        #     self.wfile.write(b'return failed')
 
 
 
@@ -94,14 +97,26 @@ def parse_args():
 
 
 def IO_audio_read(IO_audio):
-    #data_directory = "backend/data/" + IO_audio.filename
-    data_directory = "data/" + IO_audio.filename
+    filename = IO_audio.filename.split('.')
+    #data_directory = "backend/data/" + str(hash(filename[0]))  +"."+  filename[1]
+    print(data_directory)
+    data_directory = "data/" + str(hash(filename[0]))  +"."+  filename[1]
     IO_audio_file = IO_audio.file.read()
     f = open(data_directory, "wb")
     f.write(IO_audio_file)
     f.close()
     return data_directory
 
+def read_in_chunks(file_object, chunk_size=102400):
+    """Generator to read a file piece by piece. Default chunk size: 1k."""
+    while True:
+        data = file_object.read(chunk_size)
+        if not data:
+            break
+        yield data
+        
+def hash(str):
+    return int(hashlib.md5(str.encode()).hexdigest(), 16) & ((1 << 32) - 1)
 
 # def main():
 #     # args = parse_args()
