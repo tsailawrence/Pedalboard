@@ -22,14 +22,15 @@ app = Flask(__name__)
 #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 #     return response
 
-@app.route('/', methods=['GET'])
-def get_handler():
+@app.route('/', defaults={'path': ''} , methods=['GET'])
+@app.route('/<path:path>' , methods=['GET'])
+def get_handler(path):
     response = Response('Please use post')
     response.headers.add('Content-Type', 'application/json')
     return response
-
-@app.route('/', methods=['POST'])
-def post_handler():
+@app.route('/', defaults={'path': ''} , methods=['POST'])
+@app.route('/<path:path>' , methods=['POST'])
+def post_handler(path):
 
     response = Response()
     response.headers.add('Content-type', 'audio/mp3')

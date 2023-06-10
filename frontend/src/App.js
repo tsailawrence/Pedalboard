@@ -25,7 +25,7 @@ function App() {
 			const controls = [{
 				Gain: [{isOn: true},{gain_db:Volume*0.01}]}, //0-200
 				{ Reverb: [{isOn: true},{room_size : Reverb*0.01}]}, //0-100
-				{ Delay:[{isOn: true}, {mix : Delay}]}, //0-100
+				{ Delay:[{isOn: true}, {mix : Delay*0.01}]}, //0-100
 				{ Chorus:[{isOn:Chorus}, {}  ]}, //boolean
 				{ Distortion:[{isOn: true}, {drive_db : Distortion}]}, //0-100
 			]
@@ -34,7 +34,7 @@ function App() {
 			data.append(`controls`, JSON.stringify(controls) );
 			data.append(`ipfs`, JSON.stringify({'ipfs': IPFS}));
 
-			fetch("http://localhost:4000", {
+			fetch("/app1/", {
 				method: "POST",
 				body: data,
 				// mode: 'cors',

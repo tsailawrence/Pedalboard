@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY /backend /backend
 
 # 定義容器啟動時要執行的命令
-CMD ["python", "simple_server.py"]
+CMD ["python", "flask_server.py"]
 EXPOSE 4000
