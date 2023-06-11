@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-pedalboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-pedalboard
+  template:
+    metadata:
+      labels:
+        app: frontend-pedalboard
+    spec:
+      containers:
+        - name: frontend
+          image: c1204545/pedalboard-frontend:latest
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-pedalboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-pedalboard
+  template:
+    metadata:
+      labels:
+        app: backend-pedalboard
+    spec:
+      containers:
+        - name: backend
+          image: c1204545/pedalboard-backend:latest
+          ports:
+            - containerPort: 4000

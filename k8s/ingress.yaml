@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pedalboard-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "ingress"    
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: pedalboard-service-frontend
+              port:
+                number: 3000
+        - path: /app1/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: pedalboard-service-backend
+              port:
+                number: 4000
+
